@@ -21,6 +21,8 @@ export default async function handler(
   res: NextApiResponse<MakeTransactionOutputData | ErrorOutput>
 ) {
   const { reference } = req.query
+  const {account} = req.query
+  
   try {
     // We pass the selected items in the query, calculate the expected cost
     const amount = parseInt("100")
@@ -34,8 +36,7 @@ export default async function handler(
       res.status(400).json({ error: "No reference provided" })
       return
     }
-     // We pass the buyer's public key in JSON body
-     const { account } = req.body as MakeTransactionInputData
+
      if (!account) {
        res.status(400).json({ error: "No account provided" })
        return
@@ -87,7 +88,7 @@ export default async function handler(
     // Return the serialized transaction
     res.status(200).json({
       transaction: base64,
-      message: "Thanks for your order! 🍪",
+      message: "Thanks for your order!",
     })
   } catch (err) {
     console.error(err);

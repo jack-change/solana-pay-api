@@ -21,7 +21,7 @@ export default async function handler(
     // Return the serialized transaction
     res.status(200).json({
       transaction_refrence: reference,
-      message: "Thanks for your order! 🍪",
+      message: "Created a new refrence for transaction",
     })
     return
 }
@@ -29,4 +29,5 @@ else {
     res.status(500).json({ error: 'error creating transaction', })
     return
   }
+
 }

@@ -3,6 +3,7 @@ import { clusterApiUrl, Connection, PublicKey, SystemProgram, LAMPORTS_PER_SOL, 
 import { NextApiRequest, NextApiResponse } from "next"
 import { Keypair, Transaction, sendAndConfirmTransaction} from "@solana/web3.js";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import console from "console";
 export type MakeTransactionInputData = {
   account: string,
 }
@@ -20,6 +21,8 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<MakeTransactionOutputData | ErrorOutput>
 ) {
+ 
+
   const { reference } = req.query
   const {account} = req.query
   try {
@@ -80,9 +83,7 @@ export default async function handler(
     })
     
     const base64 = serializedTransaction.toString('base64')
-    
     // Insert into database: reference, amount
-
     // Return the serialized transaction
     res.status(200).json({
       transaction: base64,

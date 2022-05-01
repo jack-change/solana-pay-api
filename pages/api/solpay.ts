@@ -1,8 +1,8 @@
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base"
-import { clusterApiUrl, Connection, PublicKey, SystemProgram, LAMPORTS_PER_SOL } from "@solana/web3.js"
+import { clusterApiUrl, Connection, PublicKey, SystemProgram, LAMPORTS_PER_SOL, sendAndConfirmRawTransaction} from "@solana/web3.js"
 import { NextApiRequest, NextApiResponse } from "next"
-import { Keypair, Transaction } from "@solana/web3.js";
-
+import { Keypair, Transaction, sendAndConfirmTransaction} from "@solana/web3.js";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 export type MakeTransactionInputData = {
   account: string,
 }
@@ -22,7 +22,6 @@ export default async function handler(
 ) {
   const { reference } = req.query
   const {account} = req.query
-  
   try {
     // We pass the selected items in the query, calculate the expected cost
     const amount = parseInt("100")
@@ -72,17 +71,16 @@ export default async function handler(
       isSigner: false,
       isWritable: false,
     })
-
-    // Add the instruction to the transaction
-    transaction.add(transferInstruction)
-
+    transaction.add(transferInstruction);
+    console.log(transaction);
     // Serialize the transaction and convert to base64 to return it
     const serializedTransaction = transaction.serialize({
       // We will need the buyer to sign this transaction after it's returned to them
       requireAllSignatures: false
     })
+    
     const base64 = serializedTransaction.toString('base64')
-
+    
     // Insert into database: reference, amount
 
     // Return the serialized transaction

@@ -1,4 +1,4 @@
-import {Transaction } from "@solana/web3.js";
+import { Keypair, Transaction,sendAndConfirmTransaction, clusterApiUrl, Connection} from "@solana/web3.js"
 import { NextApiRequest, NextApiResponse } from "next"
 
 export type MakeTransactionRefrenceOutputData = {
@@ -22,6 +22,9 @@ export default async function handler(
     console.log(decrypt_transaction)
      const transact = Transaction.from(Buffer.from(decrypt_transaction, 'base64'));
      console.log(transact);
+     let keypair = Keypair.generate();
+let connection = new Connection(clusterApiUrl('testnet'));
+
     // Return the serialized transaction
     res.status(200).json({
       transaction_JSON: transact,
